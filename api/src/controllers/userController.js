@@ -35,17 +35,15 @@ async function addUser(req, res) {
     delete userLoginEntity.AuthFlow;
     delete userLoginEntity.ClientId;
     delete userLoginEntity.AuthParameters;
-  
-    const userEntity = {
-        ClientId: process.env.COGNITO_APP_CLIENT_NAME,
-        Username: username,
-        Password: process.env.COGNITO_USERKEY,
-        UserAttributes: userAttribute,
-        ValidationData: [{ Name: "Test", Value: "STRING_VALUE" }],
-    };
-  
+    
+    userRegisterEntity.ClientId = process.env.COGNITO_APP_CLIENT_NAME
+    userRegisterEntity.Username = username
+    userRegisterEntity.Password = Password
+    userRegisterEntity.UserAttributes = UserAttributes
+    userRegisterEntity.ValidationData = [{ Name: "Test", Value: "STRING_VALUE" }]
+
     try {
-        let result = await cognito.signUp(userEntity).promise();
+        let result = await cognito.signUp(userRegisterEntity).promise();
         res.status(200).json({code: 0,user_id: result.UserSub,});
     } catch (err) {
         // throw err
